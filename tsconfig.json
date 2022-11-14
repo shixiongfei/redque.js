@@ -2,11 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2015",
-    "lib": ["es6"],
     "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
-    "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
@@ -15,10 +13,5 @@
     "noImplicitAny": true,
     "skipLibCheck": true,
     "sourceMap": true
-  },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "test"
-  ]
+  }
 }

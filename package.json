@@ -12,7 +12,8 @@
     "url": "https://github.com/shixiongfei/redque.js"
   },
   "scripts": {
-    "build": "tsc"
+    "compile": "tsc",
+    "start": "tsc -w"
   },
   "keywords": [
     "redis",
