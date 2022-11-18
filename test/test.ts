@@ -1,3 +1,14 @@
+/*
+ * test.ts
+ *
+ * Copyright (c) 2022 Xiongfei Shi
+ *
+ * Author: Xiongfei Shi <xiongfei.shi(a)icloud.com>
+ * License: Apache-2.0
+ *
+ * https://github.com/shixiongfei/redque.js
+ */
+
 import { DelayQueue } from "../src/index";
 
 const redisUrl = "redis://:123456@127.0.0.1:6379/1";
