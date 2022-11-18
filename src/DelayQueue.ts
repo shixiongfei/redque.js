@@ -23,13 +23,13 @@ export class DelayQueue extends BaseRedis {
       await this.redis.set(DelayQueue.PRODUCER_SCRIPT_SHA, scriptSha);
     }
 
-    return await this.redis.evalSha(scriptSha, {
+    await this.redis.evalSha(scriptSha, {
       keys: [this.name, `${this.name}:hash`],
       arguments: [`${score}`, ulid(), message],
     });
   }
 
-  async consumer(maxScore: number, count = 10) {
+  async consumer(maxScore: number, count = 1) {
     let scriptSha = await this.redis.get(DelayQueue.CONSUMER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -51,9 +51,9 @@ export class DelayQueue extends BaseRedis {
       await this.redis.set(DelayQueue.CONSUMER_SCRIPT_SHA, scriptSha);
     }
 
-    return await this.redis.evalSha(scriptSha, {
+    return (await this.redis.evalSha(scriptSha, {
       keys: [this.name, `${this.name}:hash`],
       arguments: [`${maxScore}`, "0", "0", `${count}`],
-    });
+    })) as Array<string>;
   }
 }
