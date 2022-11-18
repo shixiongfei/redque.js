@@ -9,4 +9,5 @@
  * https://github.com/shixiongfei/redque.js
  */
 
+export * from "./SimpleQueue";
 export * from "./DelayQueue";
