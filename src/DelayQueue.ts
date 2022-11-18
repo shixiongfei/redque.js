@@ -40,7 +40,7 @@ export class DelayQueue extends BaseRedis {
     });
   }
 
-  async consumer(maxScore: number, count = 1) {
+  async consumer(maxScore: number) {
     let scriptSha = await this.redis.get(DelayQueue.CONSUMER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -48,7 +48,7 @@ export class DelayQueue extends BaseRedis {
         local status, type = next(redis.call('TYPE', KEYS[1]))
         if status ~= nil and status == 'ok' then
           if type == 'zset' then
-              local list = redis.call('ZREVRANGEBYSCORE', KEYS[1], ARGV[1], ARGV[2], 'LIMIT', ARGV[3], ARGV[4])
+              local list = redis.call('ZRANGEBYSCORE', KEYS[1], ARGV[1], ARGV[2], 'LIMIT', ARGV[3], ARGV[4])
               if list ~= nil and #list > 0 then
                   redis.call('ZREM', KEYS[1], unpack(list))
                   local result = redis.call('HMGET', KEYS[2], unpack(list))
@@ -62,9 +62,11 @@ export class DelayQueue extends BaseRedis {
       await this.redis.set(DelayQueue.CONSUMER_SCRIPT_SHA, scriptSha);
     }
 
-    return (await this.redis.evalSha(scriptSha, {
+    const payload = (await this.redis.evalSha(scriptSha, {
       keys: [this.name, `${this.name}:hash`],
-      arguments: [`${maxScore}`, "0", "0", `${count}`],
+      arguments: ["0", `${maxScore}`, "0", "1"],
     })) as Array<string>;
+
+    return payload && payload.length > 0 ? payload[0] : undefined;
   }
 }

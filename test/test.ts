@@ -26,11 +26,10 @@ const testDelayQueue = async () => {
   }
 
   for (const code of [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
-    const messages = await dq.consumer(code);
-    if (messages) {
-      for (const message of messages) {
-        console.log("DelayQueue consumer", JSON.parse(message));
-      }
+    for (;;) {
+      const message = await dq.consumer(code);
+      if (!message) break;
+      console.log("DelayQueue consumer", JSON.parse(message));
     }
   }
 
