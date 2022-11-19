@@ -11,3 +11,4 @@
 
 export * from "./SimpleQueue";
 export * from "./DelayQueue";
+export * from "./StreamQueue";

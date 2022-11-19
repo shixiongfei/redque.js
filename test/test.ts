@@ -9,7 +9,7 @@
  * https://github.com/shixiongfei/redque.js
  */
 
-import { SimpleQueue, DelayQueue } from "../src/index";
+import { SimpleQueue, DelayQueue, StreamQueue } from "../src/index";
 
 const redisUrl = "redis://:123456@127.0.0.1:6379/1";
 
@@ -22,14 +22,14 @@ const testSimpleQueue = async () => {
   for (const code of [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
     const timestamp = new Date().getTime();
     const message = { code, payload: `Time: ${timestamp}` } as Message;
-    await sq.producer(JSON.stringify(message));
+    await sq.producer(message);
     console.log("SimpleQueue producer", message);
   }
 
   for (;;) {
     const message = await sq.consumer();
     if (!message) break;
-    console.log("SimpleQueue consumer", JSON.parse(message));
+    console.log("SimpleQueue consumer", message);
   }
 
   await sq.close();
@@ -42,7 +42,7 @@ const testDelayQueue = async () => {
   for (const code of [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
     const timestamp = new Date().getTime();
     const message = { code, payload: `Time: ${timestamp}` } as Message;
-    await dq.producer(JSON.stringify(message), code);
+    await dq.producer(message, code);
     console.log("DelayQueue producer", message);
   }
 
@@ -50,12 +50,43 @@ const testDelayQueue = async () => {
     for (;;) {
       const message = await dq.consumer(code);
       if (!message) break;
-      console.log("DelayQueue consumer", JSON.parse(message));
+      console.log("DelayQueue consumer", message);
     }
   }
 
   await dq.close();
 };
 
+const testStreamQueue = async () => {
+  const group = "redque-test-stream-group";
+  const consumer = "redque-test-stream-group-consumer";
+  const sq = new StreamQueue("redque-test-stream-queue", redisUrl);
+  await sq.connect();
+  await sq.ensureGroup(group);
+
+  for (const code of [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
+    const timestamp = new Date().getTime();
+    const message = { code, payload: `Time: ${timestamp}` } as Message;
+    await sq.producer(message);
+    console.log("StreamQueue producer", message);
+  }
+
+  for (;;) {
+    const message = await sq.consumer(group, consumer);
+    if (!message) break;
+    console.log("StreamQueue consumer", message);
+  }
+
+  for (;;) {
+    const message = await sq.consumerPending(group, consumer);
+    if (!message) break;
+    await sq.ack(group, message[0]);
+    console.log("StreamQueue consumer pending", message);
+  }
+
+  await sq.close();
+};
+
 testSimpleQueue();
 testDelayQueue();
+testStreamQueue();
