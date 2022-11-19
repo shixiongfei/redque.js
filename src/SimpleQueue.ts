@@ -19,8 +19,8 @@ export class SimpleQueue extends BaseRedis {
     this.name = name;
   }
 
-  async producer(message: string) {
-    await this.redis.lPush(this.name, message);
+  async producer(payload: string) {
+    await this.redis.lPush(this.name, payload);
   }
 
   async consumer() {
