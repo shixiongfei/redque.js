@@ -22,7 +22,7 @@ export class DelayQueue extends BaseRedis {
     this.name = name;
   }
 
-  async producer(message: string, score: number) {
+  async producer(payload: string, delay: number) {
     let scriptSha = await this.redis.get(DelayQueue.PRODUCER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -36,11 +36,11 @@ export class DelayQueue extends BaseRedis {
 
     await this.redis.evalSha(scriptSha, {
       keys: [this.name, `${this.name}:hash`],
-      arguments: [`${score}`, ulid(), message],
+      arguments: [`${delay}`, ulid(), payload],
     });
   }
 
-  async consumer(maxScore: number) {
+  async consumer(maxDelay: number) {
     let scriptSha = await this.redis.get(DelayQueue.CONSUMER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -64,7 +64,7 @@ export class DelayQueue extends BaseRedis {
 
     const payload = (await this.redis.evalSha(scriptSha, {
       keys: [this.name, `${this.name}:hash`],
-      arguments: ["0", `${maxScore}`, "0", "1"],
+      arguments: ["0", `${maxDelay}`, "0", "1"],
     })) as Array<string>;
 
     return payload && payload.length > 0 ? payload[0] : undefined;
