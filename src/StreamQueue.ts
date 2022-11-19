@@ -34,9 +34,9 @@ export class StreamQueue extends BaseRedis {
     );
   }
 
-  async ensureGroup(group: string) {
+  async ensureGroup(group: string, rewind = false) {
     try {
-      await this.redis.xGroupCreate(this.stream, group, "0", {
+      await this.redis.xGroupCreate(this.stream, group, rewind ? "0" : "$", {
         MKSTREAM: true,
       });
     } catch (_) {
