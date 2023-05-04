@@ -12,7 +12,7 @@
     "url": "https://github.com/shixiongfei/redque.js"
   },
   "scripts": {
-    "compile": "tsc",
+    "build": "tsc",
     "start": "tsc -w",
     "test": "tsc && node lib/test/test.js"
   },
