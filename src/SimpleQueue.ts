@@ -9,13 +9,14 @@
  * https://github.com/shixiongfei/redque.js
  */
 
+import { RedisClientType } from "redis";
 import { BaseRedis } from "./BaseRedis";
 
 export class SimpleQueue extends BaseRedis {
   private readonly name: string;
 
-  constructor(name: string, redisUrl: string) {
-    super(redisUrl);
+  constructor(name: string, redisOrUrl: RedisClientType | string) {
+    super(redisOrUrl);
     this.name = name;
   }
 

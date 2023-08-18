@@ -9,21 +9,26 @@
  * https://github.com/shixiongfei/redque.js
  */
 
-import { RedisClientType } from "@redis/client";
-import { createClient } from "redis";
+import { createClient, RedisClientType } from "redis";
 
 export class BaseRedis {
   protected readonly redis: RedisClientType;
 
-  constructor(redisUrl: string) {
-    this.redis = createClient({ url: redisUrl });
+  constructor(redisOrUrl: RedisClientType | string) {
+    if (typeof redisOrUrl === "string") {
+      this.redis = createClient({ url: redisOrUrl });
+    } else {
+      this.redis = redisOrUrl;
+    }
   }
 
   async connect() {
-    return await this.redis.connect();
+    if (!this.redis.isOpen && !this.redis.isReady) {
+      await this.redis.connect();
+    }
   }
 
   async close() {
-    return await this.redis.disconnect();
+    await this.redis.disconnect();
   }
 }

@@ -9,6 +9,7 @@
  * https://github.com/shixiongfei/redque.js
  */
 
+import { RedisClientType } from "redis";
 import { ulid } from "ulid";
 import { BaseRedis } from "./BaseRedis";
 
@@ -17,8 +18,8 @@ export class DelayQueue extends BaseRedis {
   private static CONSUMER_SCRIPT_SHA = "REDQUE:SCRIPTS:DELAY:CONSUMER:SHA";
   private readonly name: string;
 
-  constructor(name: string, redisUrl: string) {
-    super(redisUrl);
+  constructor(name: string, redisOrUrl: RedisClientType | string) {
+    super(redisOrUrl);
     this.name = name;
   }
 
