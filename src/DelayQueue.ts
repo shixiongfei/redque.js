@@ -9,9 +9,8 @@
  * https://github.com/shixiongfei/redque.js
  */
 
-import { RedisClientType } from "redis";
 import { ulid } from "ulid";
-import { BaseRedis } from "./BaseRedis";
+import { BaseRedis, RedisClientType } from "./BaseRedis";
 
 export class DelayQueue extends BaseRedis {
   private static PRODUCER_SCRIPT_SHA = "REDQUE:SCRIPTS:DELAY:PRODUCER:SHA";

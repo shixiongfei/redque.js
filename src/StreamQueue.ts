@@ -9,8 +9,7 @@
  * https://github.com/shixiongfei/redque.js
  */
 
-import { RedisClientType } from "redis";
-import { BaseRedis } from "./BaseRedis";
+import { BaseRedis, RedisClientType } from "./BaseRedis";
 
 export class StreamQueue extends BaseRedis {
   private readonly stream: string;
