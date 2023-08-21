@@ -29,7 +29,7 @@ const testSimpleQueue = async () => {
   }
 
   for (;;) {
-    const message = await sq.consumer();
+    const message = await sq.consumer<Message>();
     if (!message) break;
     console.log("SimpleQueue consumer", message);
   }
@@ -50,7 +50,7 @@ const testDelayQueue = async () => {
 
   for (const code of [10, 20, 30, 40, 50, 60, 70, 80, 90]) {
     for (;;) {
-      const message = await dq.consumer(code);
+      const message = await dq.consumer<Message>(code);
       if (!message) break;
       console.log("DelayQueue consumer", message);
     }
@@ -74,13 +74,13 @@ const testStreamQueue = async () => {
   }
 
   for (;;) {
-    const message = await sq.consumer(group, consumer);
+    const message = await sq.consumer<Message>(group, consumer);
     if (!message) break;
     console.log("StreamQueue consumer", message);
   }
 
   for (;;) {
-    const message = await sq.consumerPending(group, consumer);
+    const message = await sq.consumerPending<Message>(group, consumer);
     if (!message) break;
     await sq.ack(group, message[0]);
     console.log("StreamQueue consumer pending", message);

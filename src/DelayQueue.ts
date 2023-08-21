@@ -22,7 +22,7 @@ export class DelayQueue extends BaseRedis {
     this.name = name;
   }
 
-  async producer(payload: unknown, delay: number) {
+  async producer<T>(payload: T, delay: number) {
     let scriptSha = await this.redis.get(DelayQueue.PRODUCER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -40,7 +40,7 @@ export class DelayQueue extends BaseRedis {
     });
   }
 
-  async consumer(maxDelay: number) {
+  async consumer<T>(maxDelay: number) {
     let scriptSha = await this.redis.get(DelayQueue.CONSUMER_SCRIPT_SHA);
 
     if (!scriptSha) {
@@ -67,6 +67,8 @@ export class DelayQueue extends BaseRedis {
       arguments: ["0", `${maxDelay}`, "0", "1"],
     })) as Array<string>;
 
-    return payload && payload.length > 0 ? JSON.parse(payload[0]) : undefined;
+    return payload && payload.length > 0
+      ? (JSON.parse(payload[0]) as T)
+      : undefined;
   }
 }

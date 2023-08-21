@@ -19,12 +19,12 @@ export class SimpleQueue extends BaseRedis {
     this.name = name;
   }
 
-  async producer(payload: unknown) {
+  async producer<T>(payload: T) {
     await this.redis.lPush(this.name, JSON.stringify(payload));
   }
 
-  async consumer() {
+  async consumer<T>() {
     const payload = await this.redis.rPop(this.name);
-    return payload ? JSON.parse(payload) : undefined;
+    return payload ? (JSON.parse(payload) as T) : undefined;
   }
 }
