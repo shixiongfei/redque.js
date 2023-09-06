@@ -24,7 +24,7 @@ export class SimpleQueue extends BaseRedis {
   }
 
   async consumer<T>(timeout?: number) {
-    return !timeout
+    return timeout === undefined
       ? await this._consumerImmediate<T>()
       : await this._consumerTimeout<T>(timeout);
   }
