@@ -23,8 +23,19 @@ export class SimpleQueue extends BaseRedis {
     await this.redis.lPush(this.name, JSON.stringify(payload));
   }
 
-  async consumer<T>() {
+  async consumer<T>(timeout?: number) {
+    return !timeout
+      ? await this._consumerImmediate<T>()
+      : await this._consumerTimeout<T>(timeout);
+  }
+
+  private async _consumerImmediate<T>() {
     const payload = await this.redis.rPop(this.name);
     return payload ? (JSON.parse(payload) as T) : undefined;
+  }
+
+  private async _consumerTimeout<T>(timeout: number) {
+    const payload = await this.redis.brPop(this.name, timeout);
+    return payload ? (JSON.parse(payload.element) as T) : undefined;
   }
 }
