@@ -1,6 +1,6 @@
 {
   "name": "redque",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A reliable message queue base on Redis",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
