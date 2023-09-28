@@ -19,7 +19,7 @@ export class StreamQueue extends BaseRedis {
     this.stream = stream;
   }
 
-  async producer<T>(payload: T, maxLen = 100000) {
+  async produce<T>(payload: T, maxLen = 100000) {
     await this.redis.xAdd(
       this.stream,
       "*",
@@ -44,19 +44,19 @@ export class StreamQueue extends BaseRedis {
     }
   }
 
-  async consumer<T>(group: string, consumer: string) {
-    return this._consumer<T>(group, consumer, ">");
+  async consume<T>(group: string, consumer: string) {
+    return this._consume<T>(group, consumer, ">");
   }
 
-  async consumerPending<T>(group: string, consumer: string) {
-    return this._consumer<T>(group, consumer, "0");
+  async consumePending<T>(group: string, consumer: string) {
+    return this._consume<T>(group, consumer, "0");
   }
 
   async ack(group: string, messageId: string) {
     await this.redis.xAck(this.stream, group, messageId);
   }
 
-  private async _consumer<T>(group: string, consumer: string, id: string) {
+  private async _consume<T>(group: string, consumer: string, id: string) {
     const response = await this.redis.xReadGroup(
       group,
       consumer,
