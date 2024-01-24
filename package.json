@@ -1,12 +1,9 @@
 {
   "name": "redque",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A reliable message queue base on Redis",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
-  "files": [
-    "lib/"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/shixiongfei/redque.js"
