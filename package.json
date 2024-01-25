@@ -4,6 +4,11 @@
   "description": "A reliable message queue base on Redis",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
+  "files": [
+    "lib/",
+    "src/",
+    "test/"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/shixiongfei/redque.js"
