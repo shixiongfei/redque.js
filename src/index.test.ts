@@ -1,7 +1,7 @@
 /*
- * test.ts
+ * index.test.ts
  *
- * Copyright (c) 2022 Xiongfei Shi
+ * Copyright (c) 2022-2024 Xiongfei Shi
  *
  * Author: Xiongfei Shi <xiongfei.shi(a)icloud.com>
  * License: Apache-2.0
@@ -10,7 +10,7 @@
  */
 
 import { createClient } from "redis";
-import { SimpleQueue, DelayQueue, StreamQueue } from "../src/index";
+import { SimpleQueue, DelayQueue, StreamQueue } from "./index.js";
 
 const redisUrl = "redis://:123456@127.0.0.1:6379/1";
 const redis = createClient({ url: redisUrl });

@@ -1,7 +1,7 @@
 /*
  * DelayQueue.ts
  *
- * Copyright (c) 2022 Xiongfei Shi
+ * Copyright (c) 2022-2024 Xiongfei Shi
  *
  * Author: Xiongfei Shi <xiongfei.shi(a)icloud.com>
  * License: Apache-2.0
@@ -10,7 +10,7 @@
  */
 
 import { ulid } from "ulid";
-import { BaseRedis, RedisClientType } from "./BaseRedis";
+import { BaseRedis, RedisClientType } from "./BaseRedis.js";
 
 export class DelayQueue extends BaseRedis {
   private static PRODUCER_SCRIPT_SHA = "REDQUE:SCRIPTS:DELAY:PRODUCER:SHA";

@@ -2,12 +2,11 @@
   "name": "redque",
   "version": "0.1.8",
   "description": "A reliable message queue base on Redis",
-  "main": "./lib/src/index.js",
-  "types": "./lib/src/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/",
-    "src/",
-    "test/"
+    "src/"
   ],
   "repository": {
     "type": "git",
@@ -16,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w",
-    "test": "tsc && node lib/test/test.js"
+    "test": "tsc && node ./lib/index.test.js"
   },
   "keywords": [
     "redis",
